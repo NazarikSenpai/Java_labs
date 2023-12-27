@@ -1,36 +1,39 @@
-public class Task13 {
-    public static double calculateInfiniteSum(double eps) {
-        if(eps<0) throw new IllegalArgumentException("eps is not valid");
-        int i = 1;
-        double sum = 0, currentStep;
-        while(true) {
-            currentStep = Math.pow(-1, i)/factorial(i);
-            if(Math.abs(currentStep) < eps) break;
+import java.util.Scanner;
 
-            sum+=currentStep;
+public class Task13 {
+    public static double calcSum(double e) {
+        if (e < 0) throw new IllegalArgumentException("e must be less than 0");
+
+        int i = 1;
+        double sum = 0;
+        double term;
+        while (true) {
+            term = Math.pow(-1, i) / factorial(i);
+
+            if (Math.abs(term) < e) break;
+
+            sum += term;
             i++;
         }
         return sum;
     }
+
     private static int factorial(int n) {
-        int factor = 1;
-        for(int i = 1; i<=n; i++) {
-            factor*=i;
+        int result = 1;
+        for (int i = 1; i <= n; i++) {
+            result *= i;
         }
-        return factor;
-    }
-    private static void printResults(double eps) {
-        try {
-            System.out.printf("For epsilon %f sum is %.3f\n", eps, calculateInfiniteSum(eps));
-        } catch (IllegalArgumentException ex) {
-            System.out.println(ex.getMessage());
-        }
+        return result;
     }
 
     public static void main(String[] args) {
-        printResults(0.00001);
-        printResults(-2.679);
-        printResults(1);
-        printResults(0.09);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Type a variable e (e>0): ");
+        String x = scanner.next();
+        double e = Double.parseDouble(x);
+
+        System.out.println("e = " + e + " : sum = " + calcSum(e));
+
     }
 }

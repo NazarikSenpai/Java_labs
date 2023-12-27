@@ -1,20 +1,20 @@
-import java.lang.Math;
-
 public class Main {
-    public static double task1(double a, double b, double c, double d) {
-        return Math.pow((4*Math.cosh(Math.sqrt(Math.abs(a/b)))+3*Math.acos(d)), c);
+    public static void main(String[] args) {
+        System.out.println("Task 16 result: " + task16(0.58, 0.34, 1.25, -1.89));
+        System.out.println("Task 17 result: " + task17(-1.49, 23.4, 1.23, 2.254));
+        System.out.println("Task 18 result: " + task18(2.34, 0.756, 2.23, -1.653));
     }
-    public static double task2(double a, double b, double c, double d) {
+
+    public static double task16(double a, double b, double c, double d) {
+        return 2 * Math.sin(a) / Math.acos(-2 * b) - Math.sqrt(Math.log(c * Math.abs(2 * d)));
+    }
+    public static double task17(double a, double b, double c, double d){
         return 2 * Math.sqrt(Math.tan(Math.abs(a+c))) + (Math.log(b))/Math.pow(c, d);
     }
-    public static double task3(double a, double b, double c, double d) {
-        return Math.sin(Math.pow(a, -b)) + 3*Math.abs(Math.acos(-Math.sqrt(c/d)));
+    public static double task18(double a, double b, double c, double d) {
+        return (Math.exp(c) + 2 * Math.log10(a)) / Math.sqrt(Math.pow(c, b)) * Math.abs(Math.asin(d));
     }
 
-    public static void main(String[] args) {
-        System.out.println("Result of task #1 = " + task1(-3.45, 2.34, 1.45, 0.83));
-        System.out.println("Result of task #2 = " + task2(-1.49, 23.4, 1.23, 2.254));
-        System.out.println("Result of task #3 = " + task3(0.478, -1.26, 2.68, 18.24));
 
-    }
+
 }
