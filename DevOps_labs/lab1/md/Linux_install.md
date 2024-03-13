@@ -1,7 +1,7 @@
 # Ubuntu on Windows installation guide
 ## 1. Download an Ubuntu image
 You can download an Ubuntu image [here](https://ubuntu.com/download/desktop).
-![Ubuntu download page screenshot](chrome_ncSeJqhVoC.png)
+![Ubuntu download page screenshot](../chrome_ncSeJqhVoC.png)
 
 ## 2. Download and install VirtualBox
 You can download VirtualBox from the downloads page [here](https://www.virtualbox.org/wiki/Downloads).
