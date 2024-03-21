@@ -6,13 +6,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         Parent root;
-        root = FXMLLoader.load(getClass().getResource("/Form.fxml"));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Form.fxml")));
         stage.setScene(new Scene(root));
+        stage.setTitle("Знайти дистанцію");
         stage.show();
+
+
     }
 
     public static void main(String[] args) {
