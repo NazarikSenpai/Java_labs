@@ -1,25 +1,20 @@
 package org.example.demo;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class Controller {
 
-    public TextField latitudeTextField;
-    public TextField longitudeTextField;
+    public ImageView imageView;
+    public Button photoButton;
+    public TableView table;
     @FXML
-    private TableColumn<?, ?> cityColumn;
+    private AnchorPane ScrollPaneAnchor;
 
     @FXML
-    private TextField cityField;
-
-    @FXML
-    private Label cityLabel;
+    private AnchorPane controlsPane;
 
     @FXML
     private Button deleteButton;
@@ -40,22 +35,40 @@ public class Controller {
     private TableColumn<?, ?> latitudeColumn;
 
     @FXML
-    private TextField latitudeLabel;
+    private Label latitudeLabel;
 
     @FXML
-    private AnchorPane leftPane;
+    private TextField latitudeTextField;
 
     @FXML
     private TableColumn<?, ?> longitudeColumn;
 
     @FXML
-    private TextField longitudeLabel;
+    private Label longitudeLabel;
+
+    @FXML
+    private TextField longitudeTextField;
+
+    @FXML
+    private AnchorPane mainPane;
+
+    @FXML
+    private TextField nameField;
+
+    @FXML
+    private Label nameLabel;
+
+    @FXML
+    private TableColumn<?, ?> photoColumn;
 
     @FXML
     private Label photoLabel;
 
     @FXML
-    private TableView<?> table;
+    private TableColumn<?, ?> regionColumn;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private AnchorPane tablePane;

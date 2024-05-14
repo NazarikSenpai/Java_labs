@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.Controller">
+   <AnchorPane fx:id="controlsPane" prefHeight="440.0" prefWidth="300.0" AnchorPane.rightAnchor="603.0">
+      <Label fx:id="idLabel" layoutX="59.0" layoutY="50.0" text="id" />
+      <TextField fx:id="idField" layoutX="84.0" layoutY="46.0" prefHeight="24.0" prefWidth="196.0" />
+      <Label fx:id="nameLabel" layoutX="43.0" layoutY="81.0" text="Name" />
+      <TextField fx:id="nameField" layoutX="84.0" layoutY="77.0" prefHeight="24.0" prefWidth="196.0" />
+      <Label fx:id="latitudeLabel" layoutX="37.0" layoutY="113.0" text="Latitude" />
+      <TextField fx:id="latitudeTextField" layoutX="84.0" layoutY="109.0" prefHeight="24.0" prefWidth="196.0" />
+      <Label fx:id="longitudeLabel" layoutX="25.0" layoutY="142.0" text="Longitude" />
+      <TextField fx:id="longitudeTextField" layoutX="84.0" layoutY="138.0" prefHeight="24.0" prefWidth="196.0" />
+      <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="150.0" layoutX="107.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="photoButton" layoutX="106.0" layoutY="184.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="+" />
+      <Label fx:id="photoLabel" layoutX="37.0" layoutY="184.0" text="Photo" />
+      <Button fx:id="insertButton" layoutX="30.0" layoutY="347.0" mnemonicParsing="false" text="Insert" />
+      <Button fx:id="deleteButton" layoutX="107.0" layoutY="347.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="updateButton" layoutX="174.0" layoutY="347.0" mnemonicParsing="false" text="Update" />
+   </AnchorPane>
+    <AnchorPane fx:id="tablePane" layoutX="303.0" prefHeight="440.0" prefWidth="600.0">
+        <ScrollPane fx:id="scrollPane" prefHeight="440.0" prefWidth="600.0">
+            <AnchorPane fx:id="ScrollPaneAnchor" minHeight="0.0" minWidth="0.0" prefHeight="440.0" prefWidth="600.0">
+                <TableView fx:id="table" prefHeight="440.0" prefWidth="600.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="38.40002518892288" text="ID" />
+                        <TableColumn prefWidth="112.80004501342773" text="City" />
+                        <TableColumn fx:id="latitudeColumn" prefWidth="100.00001525878906" text="Latitude" />
+                        <TableColumn fx:id="longitudeColumn" prefWidth="89.5999755859375" text="Longitude" />
+                        <TableColumn fx:id="regionColumn" prefWidth="94.4000244140625" text="Region" />
+                        <TableColumn fx:id="photoColumn" prefWidth="163.2000732421875" text="Photo" />
+                    </columns>
+                </TableView>
+            </AnchorPane>
+        </ScrollPane>
+    </AnchorPane>
+</AnchorPane>
