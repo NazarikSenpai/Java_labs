@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="500.0" prefWidth="300.0">
+         <children>
+            <Label fx:id="idLabel" layoutX="38.0" layoutY="24.0" text="ID" />
+            <TextField fx:id="idTextField" layoutX="75.0" layoutY="19.0" prefHeight="26.0" prefWidth="160.0" />
+            <Label fx:id="nameLabel" layoutX="28.0" layoutY="55.0" text="Назва" />
+            <TextField fx:id="nameTextField" layoutX="75.0" layoutY="51.0" prefHeight="26.0" prefWidth="160.0" />
+            <Label fx:id="latLabel" layoutX="21.0" layoutY="86.0" text="Широта" />
+            <TextField fx:id="latTextField" layoutX="75.0" layoutY="82.0" prefHeight="26.0" prefWidth="160.0" />
+            <Label fx:id="longLabel" layoutX="20.0" layoutY="116.0" text="Довгота" />
+            <TextField fx:id="longTextField" layoutX="75.0" layoutY="112.0" prefHeight="26.0" prefWidth="160.0" />
+            <Label fx:id="regionLabel" layoutX="25.0" layoutY="151.0" text="Регіон" />
+            <ComboBox fx:id="regionComboBox" layoutX="75.0" layoutY="147.0" prefHeight="26.0" prefWidth="160.0" />
+            <Label fx:id="photoLabel" layoutX="29.0" layoutY="233.0" text="Фото" />
+            <Button fx:id="photoButton" layoutX="31.0" layoutY="251.0" mnemonicParsing="false" text="+" />
+            <ImageView fx:id="imageView" fitHeight="90.0" fitWidth="160.0" layoutX="75.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="photoPathLabel" layoutX="75.0" layoutY="287.0" text="file path" />
+            <Button layoutX="122.0" layoutY="371.0" mnemonicParsing="false" text="Update" />
+            <Button layoutX="65.0" layoutY="371.0" mnemonicParsing="false" text="Insert" />
+            <Button layoutX="186.0" layoutY="371.0" mnemonicParsing="false" text="Clear" />
+            <Button layoutX="90.0" layoutY="432.0" mnemonicParsing="false" text="Print" />
+            <Button layoutX="152.0" layoutY="432.0" mnemonicParsing="false" text="Delete" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="300.0" prefHeight="500.0" prefWidth="600.0" />
+   </children>
+</AnchorPane>
