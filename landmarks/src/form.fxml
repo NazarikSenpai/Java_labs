@@ -22,7 +22,7 @@
                 <ImageView fx:id="imageView" fitHeight="90.0" fitWidth="160.0" layoutX="75.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
                 <Label fx:id="photoPathLabel" alignment="TOP_LEFT" layoutX="75.0" layoutY="287.0" prefHeight="64.0" prefWidth="160.0" text="file path" />
                 <Button fx:id="updateButton" layoutX="122.0" layoutY="371.0" mnemonicParsing="false" text="Update" />
-                <Button fx:id="insertButton" layoutX="52.0" layoutY="371.0" mnemonicParsing="false" text="Insert" />
+                <Button fx:id="insertButton" layoutX="52.0" layoutY="371.0" mnemonicParsing="false" onAction="#insertButtonOnClicked" text="Insert" />
                 <Button fx:id="clearButton" layoutX="207.0" layoutY="371.0" mnemonicParsing="false" onAction="#clearButtonOnClicked" text="Clear" />
                 <Button fx:id="printButton" layoutX="54.0" layoutY="432.0" mnemonicParsing="false" onAction="#printButtonOnClicked" text="Print" />
                 <Button fx:id="deleteButton" layoutX="203.0" layoutY="432.0" mnemonicParsing="false" text="Delete" />

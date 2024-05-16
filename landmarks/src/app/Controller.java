@@ -3,25 +3,17 @@ package app;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
 public class Controller {
     public Button connectButton;
     @FXML
@@ -78,13 +70,13 @@ public class Controller {
     private Button updateButton;
 
     private String selectedPhotoPath;
+    private Connection connection = DatabaseConnection.getConnection();
 
     public ObservableList<Model> getLandmarks() {
         ObservableList<Model> data = FXCollections.observableArrayList();
         String query = "SELECT id, name, latitude, longitude, region, photo FROM landmarks";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
@@ -173,5 +165,51 @@ public class Controller {
         regionComboBox.setValue("");
         photoPathLabel.setText("file path");
         imageView.setImage(null);
+    }
+
+    @FXML
+    private void insertButtonOnClicked() {
+        String name = nameTextField.getText();
+        double latitude = Double.parseDouble(latTextField.getText());
+        double longitude = Double.parseDouble(longTextField.getText());
+        String region = regionComboBox.getValue();
+
+        String sql = "INSERT INTO landmarks (name, latitude, longitude, region, photo) VALUES (?, ?, ?, ?, LOAD_FILE(?))";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setDouble(2, latitude);
+            pstmt.setDouble(3, longitude);
+            pstmt.setString(4, region);
+            pstmt.setString(5, selectedPhotoPath);
+
+            pstmt.executeUpdate();
+
+            tableView.setItems(this.getLandmarks());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void deleteButtonOnClicked() {
+        int id = Integer.parseInt(idTextField.getText());
+
+        String sql = "DELETE FROM landmarks WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            pstmt.executeUpdate();
+
+            tableView.setItems(this.getLandmarks());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
