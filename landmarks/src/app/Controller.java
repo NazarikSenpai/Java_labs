@@ -11,7 +11,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +59,7 @@ public class Controller {
     @FXML
     private Button photoButton;
     @FXML
-    private TableColumn<Model, byte[]> photoColumn;
+    private TableColumn<Model, String> photoColumn;
     @FXML
     private Label photoLabel;
     @FXML
@@ -70,6 +76,9 @@ public class Controller {
     private TableView<Model> tableView;
     @FXML
     private Button updateButton;
+
+    private String selectedPhotoPath;
+
     public ObservableList<Model> getLandmarks() {
         ObservableList<Model> data = FXCollections.observableArrayList();
         String query = "SELECT id, name, latitude, longitude, region, photo FROM landmarks";
@@ -115,5 +124,54 @@ public class Controller {
 
         ObservableList<Model> data = this.getLandmarks();
         tableView.setItems(data);
+
+        regionComboBox.setItems(regions);
+    }
+
+    @FXML
+    private void photoButtonOnClicked() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null) {
+            selectedPhotoPath = selectedFile.getAbsolutePath();
+            photoPathLabel.setText(selectedPhotoPath);
+            Image image = new Image(selectedFile.toURI().toString());
+            imageView.setImage(image);
+        }
+    }
+
+    @FXML
+    public void printButtonOnClicked() {
+        Model selectedLandmark = tableView.getSelectionModel().getSelectedItem();
+        if (selectedLandmark != null) {
+            idTextField.setText(String.valueOf(selectedLandmark.getId()));
+            nameTextField.setText(selectedLandmark.getName());
+            latTextField.setText(String.valueOf(selectedLandmark.getLatitude()));
+            longTextField.setText(String.valueOf(selectedLandmark.getLongitude()));
+            regionComboBox.setValue(selectedLandmark.getRegion());
+            photoPathLabel.setText("file path");
+
+            byte[] photoBytes = selectedLandmark.getPhoto();
+            if (photoBytes != null) {
+                Image image = new Image(new ByteArrayInputStream(photoBytes));
+                imageView.setImage(image);
+            } else {
+                imageView.setImage(null);
+            }
+        }
+    }
+
+    @FXML
+    public void clearButtonOnClicked(){
+        idTextField.setText("");
+        nameTextField.setText("");
+        latTextField.setText("");
+        longTextField.setText("");
+        regionComboBox.setValue("");
+        photoPathLabel.setText("file path");
+        imageView.setImage(null);
     }
 }
