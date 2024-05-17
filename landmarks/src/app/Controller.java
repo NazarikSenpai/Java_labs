@@ -10,12 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.*;
 import java.sql.*;
 
 public class Controller {
     public Button connectButton;
+    public Button photoClearButton;
     @FXML
     private Button clearButton;
     @FXML
@@ -70,13 +70,14 @@ public class Controller {
     private Button updateButton;
 
     private String selectedPhotoPath;
-    private Connection connection = DatabaseConnection.getConnection();
+    private byte[] photoBytes;
 
     public ObservableList<Model> getLandmarks() {
         ObservableList<Model> data = FXCollections.observableArrayList();
         String query = "SELECT id, name, latitude, longitude, region, photo FROM landmarks";
 
-        try (Statement statement = connection.createStatement();
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
@@ -106,7 +107,7 @@ public class Controller {
             "Київ", "Севастополь"
     );
 
-    public void getTableView() {
+    public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         latColumn.setCellValueFactory(new PropertyValueFactory<>("latitude"));
@@ -146,7 +147,7 @@ public class Controller {
             regionComboBox.setValue(selectedLandmark.getRegion());
             photoPathLabel.setText("file path");
 
-            byte[] photoBytes = selectedLandmark.getPhoto();
+            photoBytes = selectedLandmark.getPhoto();
             if (photoBytes != null) {
                 Image image = new Image(new ByteArrayInputStream(photoBytes));
                 imageView.setImage(image);
@@ -165,6 +166,7 @@ public class Controller {
         regionComboBox.setValue("");
         photoPathLabel.setText("file path");
         imageView.setImage(null);
+        selectedPhotoPath = null;
     }
 
     @FXML
@@ -174,15 +176,18 @@ public class Controller {
         double longitude = Double.parseDouble(longTextField.getText());
         String region = regionComboBox.getValue();
 
-        String sql = "INSERT INTO landmarks (name, latitude, longitude, region, photo) VALUES (?, ?, ?, ?, LOAD_FILE(?))";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO landmarks (name, latitude, longitude, region, photo) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            InputStream photo = new FileInputStream(new File(selectedPhotoPath));
 
             pstmt.setString(1, name);
             pstmt.setDouble(2, latitude);
             pstmt.setDouble(3, longitude);
             pstmt.setString(4, region);
-            pstmt.setString(5, selectedPhotoPath);
+            pstmt.setBinaryStream(5, photo, (int) new File(selectedPhotoPath).length());
 
             pstmt.executeUpdate();
 
@@ -190,6 +195,8 @@ public class Controller {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -208,8 +215,55 @@ public class Controller {
 
             tableView.setItems(this.getLandmarks());
 
+            this.clearButtonOnClicked();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void updateButtonOnClicked() {
+        String id = idTextField.getText();
+        String name = nameTextField.getText();
+        double latitude = Double.parseDouble(latTextField.getText());
+        double longitude = Double.parseDouble(longTextField.getText());
+        String region = regionComboBox.getValue();
+
+        String sql = "UPDATE landmarks SET name = ?, latitude = ?, longitude = ?, region = ?, photo = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setDouble(2, latitude);
+            pstmt.setDouble(3, longitude);
+            pstmt.setString(4, region);
+            pstmt.setInt(6, Integer.parseInt(id));
+
+            if(selectedPhotoPath != null){
+                try (InputStream inputStream = new FileInputStream(new File(selectedPhotoPath))) {
+                    pstmt.setBinaryStream(5, inputStream, (int) new File(selectedPhotoPath).length());
+                }
+            } else {
+                try(ByteArrayInputStream byteArray = new ByteArrayInputStream(photoBytes)) {
+                    pstmt.setBinaryStream(5, byteArray, photoBytes.length);
+                }
+            }
+
+
+            pstmt.executeUpdate();
+
+            tableView.setItems(this.getLandmarks());
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void photoClearButtonOnClicked(){
+        selectedPhotoPath = null;
+        imageView.setImage(null);
     }
 }

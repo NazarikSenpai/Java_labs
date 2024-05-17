@@ -12,11 +12,8 @@ public class DatabaseConnection {
         Connection connection = null;
         try {
             // Завантаження драйвера
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            System.err.println("MySQL JDBC Driver not found. Include it in your library path.");
-            e.printStackTrace();
         } catch (SQLException e) {
             System.err.println("Connection failed. Check output console.");
             e.printStackTrace();
