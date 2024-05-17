@@ -13,62 +13,37 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.sql.*;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class Controller {
-    public Button connectButton;
     public Button photoClearButton;
     @FXML
-    private Button clearButton;
-    @FXML
-    private Button deleteButton;
-    @FXML
     private TableColumn<Model, Integer> idColumn;
-    @FXML
-    private Label idLabel;
     @FXML
     private TextField idTextField;
     @FXML
     private ImageView imageView;
     @FXML
-    private Button insertButton;
-    @FXML
     private TableColumn<Model, Double> latColumn;
-    @FXML
-    private Label latLabel;
     @FXML
     private TextField latTextField;
     @FXML
     private TableColumn<Model, Double> longColumn;
     @FXML
-    private Label longLabel;
-    @FXML
     private TextField longTextField;
     @FXML
     private TableColumn<Model, String> nameColumn;
     @FXML
-    private Label nameLabel;
-    @FXML
     private TextField nameTextField;
-    @FXML
-    private Button photoButton;
     @FXML
     private TableColumn<Model, String> photoColumn;
     @FXML
-    private Label photoLabel;
-    @FXML
     private Label photoPathLabel;
-    @FXML
-    private Button printButton;
     @FXML
     private TableColumn<Model, String> regionColumn;
     @FXML
     private ComboBox<String> regionComboBox;
     @FXML
-    private Label regionLabel;
-    @FXML
     private TableView<Model> tableView;
-    @FXML
-    private Button updateButton;
-
     private String selectedPhotoPath;
     private byte[] photoBytes;
 
@@ -181,7 +156,7 @@ public class Controller {
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            InputStream photo = new FileInputStream(new File(selectedPhotoPath));
+            InputStream photo = new FileInputStream(selectedPhotoPath);
 
             pstmt.setString(1, name);
             pstmt.setDouble(2, latitude);
@@ -202,7 +177,9 @@ public class Controller {
 
     @FXML
     private void deleteButtonOnClicked() {
-        int id = Integer.parseInt(idTextField.getText());
+        Model selectedLandmark = tableView.getSelectionModel().getSelectedItem();
+        int id = selectedLandmark.getId();
+
 
         String sql = "DELETE FROM landmarks WHERE id = ?";
 
@@ -222,6 +199,7 @@ public class Controller {
         }
     }
 
+
     @FXML
     private void updateButtonOnClicked() {
         String id = idTextField.getText();
@@ -239,20 +217,25 @@ public class Controller {
             pstmt.setDouble(2, latitude);
             pstmt.setDouble(3, longitude);
             pstmt.setString(4, region);
-            pstmt.setInt(6, Integer.parseInt(id));
 
-            if(selectedPhotoPath != null){
-                try (InputStream inputStream = new FileInputStream(new File(selectedPhotoPath))) {
-                    pstmt.setBinaryStream(5, inputStream, (int) new File(selectedPhotoPath).length());
-                }
-            } else {
+
+           if(selectedPhotoPath != null){
+               try (InputStream inputStream = new FileInputStream(selectedPhotoPath)) {
+                   pstmt.setBinaryStream(5, inputStream, (int) new File(selectedPhotoPath).length());
+                   pstmt.setInt(6, Integer.parseInt(id));
+                   pstmt.executeUpdate();
+               }
+            }
+            else {
                 try(ByteArrayInputStream byteArray = new ByteArrayInputStream(photoBytes)) {
                     pstmt.setBinaryStream(5, byteArray, photoBytes.length);
+                    pstmt.setInt(6, Integer.parseInt(id));
+                    pstmt.executeUpdate();
                 }
             }
 
 
-            pstmt.executeUpdate();
+
 
             tableView.setItems(this.getLandmarks());
 
@@ -265,5 +248,6 @@ public class Controller {
     private void photoClearButtonOnClicked(){
         selectedPhotoPath = null;
         imageView.setImage(null);
+        photoBytes = null;
     }
 }
